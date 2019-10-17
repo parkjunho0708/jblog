@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="category">
+
+	<insert id="adminCategoryAdd" parameterType="categoryvo" >
+		<![CDATA[
+			insert into category values (null, #{categoryName}, #{categoryDesc}, now(), 'true', 0, #{userId})
+		]]>
+	</insert>
+	
+	<select id="getAllCategoryList"  parameterType="string" resultType="categoryvo">
+		<![CDATA[
+			select category_no as categoryNo, category_name as categoryName, post_count as postCount, 
+			category_desc as categoryDesc, 
+			date_format(category_regdate, '%Y-%m-%d %h:%i:%s') as categoryRegdate, 
+			user_id as userId 
+			from category where user_id = #{userId}
+		]]>
+	</select>
+	
+	<select id="adminCategoryGetRecentData"  parameterType="string" resultType="categoryvo">
+		<![CDATA[
+			select category_no as categoryNo, category_name as categoryName, 
+			category_desc as categoryDesc, 
+			date_format(category_regdate, '%Y-%m-%d %h:%i:%s') as categoryRegdate, 
+			user_id as userId 
+			from category where user_id = #{userId} order by category_no desc limit 1
+		]]>
+	</select>
+	
+	<delete id="adminCategoryDelete" parameterType="map">
+		<![CDATA[
+			delete from category where user_id = #{userId} and category_no = #{categoryNo}
+		]]>
+	</delete>
+	
+	<select id="getAllCategoryName"  parameterType="string" resultType="categoryvo">
+		<![CDATA[
+			select category_no as categoryNo, category_name as categoryName 
+			from category where user_id = #{userId}
+		]]>
+	</select>
+	
+	<select id="getCategoryListTopSeven"  parameterType="string" resultType="categoryvo">
+		<![CDATA[
+			select category_no as categoryNo, category_name as categoryName 
+			from category where user_id = #{userId} order by category_no desc limit 7
+		]]>
+	</select>
+		
+	<select id="getCategoryInfo"  parameterType="int" resultType="categoryvo">
+		<![CDATA[
+			select category_no as categoryNo, category_name as categoryName, category_desc as categoryDesc, 
+			date_format(category_regdate, '%Y-%m-%d %h:%i:%s') as categoryRegdate 
+			from category where category_no = #{categoryNo}
+		]]>
+	</select>
+
+</mapper>
