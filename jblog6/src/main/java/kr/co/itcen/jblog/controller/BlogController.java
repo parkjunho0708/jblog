@@ -73,6 +73,7 @@ public class BlogController {
 			map.put("postList", blogService.blogMainPostList(userId));
 		}
 
+		System.out.println("blogService : " + blogService);
 		map.putAll(blogService.getBlogInfomation(userId));
 
 		if (map.get("blogVo") == null) {
